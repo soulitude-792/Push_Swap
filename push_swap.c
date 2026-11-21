@@ -1,76 +1,72 @@
-//right now, the code is not scalable or norminette compliant
-//the to do list for tomorrow, is to make it norminette compliant
-//and scalable. the ideas to do so is:
-
-//1. use sizeof to find how many elements in the array of strings, instead of 
-//hardcoded 4, so that if we need to add another flag, we can easily do it.
-
-//2. in the function length_compare(), underflow might happen because of 
-//strlen(arg) - 2, even though it is already avoided, but just to be sure,
-//we need to add a guard for it, we need to check if strlen(arg) >= 2.
-
-//3. we need to put the while loop in is_valid_argument() in a function.
-//it needs to return the matching complexity enum number.
-
-//4. syntax for norminette.
-
-//5. proper header file.
-
 
 #include <stdio.h>
 #include "libft/libft.h"
 
-//the enum needs to be in the header file
-enum enComplexity{Simple, Medium, Complex, Bench, None, Invalid};
-
-int length_compare(char *arg, char *str)
+enum e_flags
 {
-	if((strlen(arg) - 2) == strlen(str))
-		return (1);
-	return (0);
-}
+	FLAG_SIMPLE,
+	FLAG_MEDIUM,
+	FLAG_COMPLEX,
+	FLAG_ADAPTIVE,
+	FLAG_BENCH,
+	FLAG_NONE,
+	FLAG_INVALID
+};
 
-enum enComplexity is_valid_argument(char *arg)
+typedef struct stflag_entry
 {
-	char *valid_arguments[] = {"simple", "medium", "complex", "bench"};
-	int argument_number;
+	char *flag_string;
+	enum e_flags flag;
+} t_flag_entry;
 
-	argument_number = 0;
-	if(arg == NULL)
-		return (None);
-	if(arg[0] == '-' && arg[1] == '-')
+t_flag_entry flag_info[] = {
+	{"simple", FLAG_SIMPLE},
+	{"medium", FLAG_MEDIUM},
+	{"complex", FLAG_COMPLEX},
+	{"adaptive", FLAG_ADAPTIVE},
+	{"bench", FLAG_BENCH}
+};
+enum e_flags is_valid_argument(char *arg)
+{
+	size_t	i;
+	size_t	count;
+
+	count = sizeof(flag_info) / sizeof(flag_info[0]);
+	if (arg == NULL)
+		return (FLAG_NONE);
+	i = 0; 
+	if (arg[0] == '-' && arg[1] == '-')
 	{
-		if(arg[2] == '\0')
-			return (Invalid);
-		while(argument_number < 4)
+		while(i < count)
 		{
-			if(length_compare(arg, valid_arguments[argument_number]))
+			if(ft_strncmp((arg + 2), flag_info[i].flag_string, ft_strlen(flag_info[i].flag_string) + 1) == 0)
 			{
-				if(ft_strncmp((arg + 2), valid_arguments[argument_number], strlen(arg) - 2) == 0)
-				{
-					return (argument_number);
-				}
+				return (flag_info[i].flag);
 			}
-			argument_number ++;
+			i++;
 		}
-		return (Invalid);
 	}
-	else
-		return (Invalid);
+	return (FLAG_INVALID);
 }
 
-int main(int argc, char *argv[])
-{
+/*int main(int argc, char *argv[])
+{	FLAG_MEDIUM,
 	int	arg_count;
 	arg_count = 1;
     	if (argc < 2)
-    	{
-        	printf("Error\n");
         	return (0);
-    	}
     	while(arg_count < argc)
 	{
 
 	}
     return (0);
 }
+int	main(void)
+{
+	printf("%d\n", is_valid_argument("--complex"));   
+	printf("%d\n", is_valid_argument("--medi"));     
+	printf("%d\n", is_valid_argument("--"));       
+	printf("%d\n", is_valid_argument("5"));        
+	printf("%d\n", is_valid_argument(NULL));        
+	return (0);
+}*/
