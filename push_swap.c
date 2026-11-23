@@ -1,72 +1,56 @@
+#include "push_swap.h"
 
-#include <stdio.h>
-#include "libft/libft.h"
-
-enum e_flags
+typedef struct s_flag_entry
 {
-	FLAG_SIMPLE,
-	FLAG_MEDIUM,
-	FLAG_COMPLEX,
-	FLAG_ADAPTIVE,
-	FLAG_BENCH,
-	FLAG_NONE,
-	FLAG_INVALID
+	char			*flag_string;
+	enum e_flags	flag;
+}	t_flag_entry;
+
+static const t_flag_entry	g_flag_info[] = {
+{"simple", FLAG_SIMPLE},
+{"medium", FLAG_MEDIUM},
+{"complex", FLAG_COMPLEX},
+{"adaptive", FLAG_ADAPTIVE},
+{"bench", FLAG_BENCH}
 };
 
-typedef struct stflag_entry
-{
-	char *flag_string;
-	enum e_flags flag;
-} t_flag_entry;
-
-t_flag_entry flag_info[] = {
-	{"simple", FLAG_SIMPLE},
-	{"medium", FLAG_MEDIUM},
-	{"complex", FLAG_COMPLEX},
-	{"adaptive", FLAG_ADAPTIVE},
-	{"bench", FLAG_BENCH}
-};
-enum e_flags is_valid_argument(char *arg)
+enum e_flags	is_valid_flag(char *arg)
 {
 	size_t	i;
 	size_t	count;
 
-	count = sizeof(flag_info) / sizeof(flag_info[0]);
-	if (arg == NULL)
-		return (FLAG_NONE);
-	i = 0; 
-	if (arg[0] == '-' && arg[1] == '-')
+	if (arg == NULL || arg[0] != '-' || arg[1] != '-')
+		return (NOT_A_FLAG);
+	count = sizeof(g_flag_info) / sizeof(g_flag_info[0]);
+	i = 0;
+	while (i < count)
 	{
-		while(i < count)
-		{
-			if(ft_strncmp((arg + 2), flag_info[i].flag_string, ft_strlen(flag_info[i].flag_string) + 1) == 0)
-			{
-				return (flag_info[i].flag);
-			}
-			i++;
-		}
+		if (ft_strncmp(arg + 2, g_flag_info[i].flag_string,
+				ft_strlen(g_flag_info[i].flag_string) + 1) == 0)
+			return (g_flag_info[i].flag);
+		i++;
 	}
 	return (FLAG_INVALID);
 }
 
-/*int main(int argc, char *argv[])
-{	FLAG_MEDIUM,
-	int	arg_count;
-	arg_count = 1;
-    	if (argc < 2)
-        	return (0);
-    	while(arg_count < argc)
-	{
-
-	}
-    return (0);
-}
-int	main(void)
+int	parse_args(int argc, char **argv, t_config *config)
 {
-	printf("%d\n", is_valid_argument("--complex"));   
-	printf("%d\n", is_valid_argument("--medi"));     
-	printf("%d\n", is_valid_argument("--"));       
-	printf("%d\n", is_valid_argument("5"));        
-	printf("%d\n", is_valid_argument(NULL));        
+	int				i;
+	enum e_flags	flag;
+
+	config->mode = FLAG_ADAPTIVE;
+	config->bench = 0;
+	i = 1;
+	while (i < argc)
+	{
+		flag = is_valid_flag(argv[i]);
+		if (flag == FLAG_INVALID)
+			return (-1);
+		if (flag == FLAG_BENCH)
+			config->bench = 1;
+		else if (flag != NOT_A_FLAG)
+			config->mode = flag;
+		i++;
+	}
 	return (0);
-}*/
+}
