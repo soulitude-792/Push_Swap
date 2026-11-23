@@ -1,35 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: imigdady <imigdady@learner.42.tech>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/23 17:02:14 by imigdady          #+#    #+#             */
+/*   Updated: 2026/11/23 17:31:41 by imigdady         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
-
-typedef struct s_flag_entry
-{
-	char			*flag_string;
-	enum e_flags	flag;
-}	t_flag_entry;
-
-static const t_flag_entry	g_flag_info[] = {
-{"simple", FLAG_SIMPLE},
-{"medium", FLAG_MEDIUM},
-{"complex", FLAG_COMPLEX},
-{"adaptive", FLAG_ADAPTIVE},
-{"bench", FLAG_BENCH}
-};
 
 enum e_flags	is_valid_flag(char *arg)
 {
-	size_t	i;
-	size_t	count;
-
 	if (arg == NULL || arg[0] != '-' || arg[1] != '-')
 		return (NOT_A_FLAG);
-	count = sizeof(g_flag_info) / sizeof(g_flag_info[0]);
-	i = 0;
-	while (i < count)
-	{
-		if (ft_strncmp(arg + 2, g_flag_info[i].flag_string,
-				ft_strlen(g_flag_info[i].flag_string) + 1) == 0)
-			return (g_flag_info[i].flag);
-		i++;
-	}
+	arg += 2;
+	if (ft_strncmp(arg, "simple", 7) == 0)
+		return (FLAG_SIMPLE);
+	if (ft_strncmp(arg, "medium", 7) == 0)
+		return (FLAG_MEDIUM);
+	if (ft_strncmp(arg, "complex", 8) == 0)
+		return (FLAG_COMPLEX);
+	if (ft_strncmp(arg, "adaptive", 9) == 0)
+		return (FLAG_ADAPTIVE);
+	if (ft_strncmp(arg, "bench", 6) == 0)
+		return (FLAG_BENCH);
 	return (FLAG_INVALID);
 }
 
