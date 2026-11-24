@@ -30,6 +30,10 @@ enum e_flags	is_valid_flag(char *arg)
 	return (FLAG_INVALID);
 }
 
+int	parse_num(char	*arg)
+{
+
+}
 int	parse_args(int argc, char **argv, t_config *config)
 {
 	int				i;
@@ -47,7 +51,11 @@ int	parse_args(int argc, char **argv, t_config *config)
 			config->bench = 1;
 		else if (flag != NOT_A_FLAG)
 			config->mode = flag;
+		else if (flag == NOT_A_FLAG)
+			parse_num(argv[i]);
 		i++;
 	}
 	return (0);
 }
+
+
