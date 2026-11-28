@@ -1,5 +1,16 @@
 #include "push_swap.h"
 
+int is_number(char *arg)
+{}
+
+int overflow_check(char *arg, int *value)
+{}
+
+int duplicate_check(t_stack *data, int value, t_stack *size)
+{}
+
+
+
 int count_total(int argc, char **argv)
 {
     int i;
