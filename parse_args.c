@@ -30,32 +30,42 @@ enum e_flags	is_valid_flag(char *arg)
 	return (FLAG_INVALID);
 }
 
-int	parse_num(char	*arg)
+static int	handle_arg(char *arg, t_config *config, t_stack *a)
 {
-
-}
-int	parse_args(int argc, char **argv, t_config *config)
-{
-	int				i;
 	enum e_flags	flag;
 
-	config->mode = FLAG_ADAPTIVE;
-	config->bench = 0;
-	i = 1;
-	while (i < argc)
+	flag = is_valid_flag(arg);
+	if (flag == FLAG_INVALID)
+		return (-1);
+	if (flag == FLAG_BENCH)
+		config->bench = 1;
+	else if (flag != NOT_A_FLAG)
+		config->mode = flag;
+	else if (flag == NOT_A_FLAG)
 	{
-		flag = is_valid_flag(argv[i]);
-		if (flag == FLAG_INVALID)
+		if(parse_nums(arg, a) == -1)
 			return (-1);
-		if (flag == FLAG_BENCH)
-			config->bench = 1;
-		else if (flag != NOT_A_FLAG)
-			config->mode = flag;
-		else if (flag == NOT_A_FLAG)
-			parse_num(argv[i]);
-		i++;
 	}
 	return (0);
 }
 
-
+int	parse_args(int argc, char **argv, t_config *config, t_stack *a)
+{
+	int	i;
+	int	total;
+	
+	config->mode = FLAG_ADAPTIVE;
+	config->bench = 0;
+	total = count_total(argc, argv);
+	a->data = malloc(sizeof(int) * total);
+	if(a->data == NULL)
+		return (-1);
+	i = 1;
+	while (i < argc)
+	{
+		if(handle_arg(argv[i], config, a) == -1)
+			return (-1);
+		i++;
+	}
+	return (0);
+}

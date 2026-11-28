@@ -10,19 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "push_swap.h"
 
 int	main(int argc, char **argv)
 {
 	t_config	config;
+	t_stack		a;
 
-	if (parse_args(argc, argv, &config) == -1)
-	{
-		printf("Error\n");
-		return (1);
-	}
-	printf("mode:  %d\n", config.mode);
-	printf("bench: %d\n", config.bench);
+	a.data = NULL;
+	a.size = 0;
+
+	parse_args(argc, argv, &config, &a);
+	
 	return (0);
 }

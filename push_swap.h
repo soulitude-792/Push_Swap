@@ -26,6 +26,12 @@ enum e_flags
 	FLAG_INVALID
 };
 
+typedef struct s_stack
+{
+	int	*data;
+	int	size;
+}	t_stack;
+
 typedef struct s_config
 {
 	enum e_flags	mode;
@@ -33,6 +39,10 @@ typedef struct s_config
 }	t_config;
 
 enum e_flags	is_valid_flag(char *arg);
-int				parse_args(int argc, char **argv, t_config *config);
+int				parse_args(int argc, char **argv, t_config *config, t_stack *a);
+int 			parse_args(int argc, char **argv, t_config *config, t_stack *a);
+int				count_total(int argc, char **argv);
+int				count_words(char *arg);
+int				parse_nums(char	*arg, t_stack *a);
 
 #endif
