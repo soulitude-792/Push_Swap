@@ -13,21 +13,34 @@ void free_all(char **splitted_args)
     free(splitted_args);
 }
 
-static int is_number(char *arg)
+int is_number(char *arg)
 {
     if(*arg == '+' || *arg == '-')
-        *arg++;
+        arg++;
+    if(!ft_isdigit(*arg))
+        return (0);
     while(*arg)
     {
         if(!ft_isdigit(*arg))
             return (0);
-        *arg++;
+        arg++;
     }
     return (1);
 }
 
 static int overflow_check(char *arg, int *value)
-{}
+{
+    int sign;
+    long res;
+    
+    sign = 1;
+    while(*arg)
+    {
+        res = res * 10 + (*arg - '0');
+    }
+
+
+}
 
 static int duplicate_check(t_stack *data, int value, t_stack *size)
 {}
