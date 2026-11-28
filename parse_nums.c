@@ -15,14 +15,15 @@ void free_all(char **splitted_args)
 
 static int is_number(char *arg)
 {
-    int sign;
-    int i;
-    int res;
-
-    sign = 1;
-    i = 0;
-    res = 0;
-    if
+    if(*arg == '+' || *arg == '-')
+        *arg++;
+    while(*arg)
+    {
+        if(!ft_isdigit(*arg))
+            return (0);
+        *arg++;
+    }
+    return (1);
 }
 
 static int overflow_check(char *arg, int *value)
