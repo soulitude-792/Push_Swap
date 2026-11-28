@@ -1,15 +1,55 @@
 #include "push_swap.h"
 
-int is_number(char *arg)
+void free_all(char **splitted_args)
+{
+    int i;
+
+    i = 0;
+    while(splitted_args[i] != NULL)
+    {
+        free(splitted_args[i]);
+        i++;
+    }
+    free(splitted_args);
+}
+
+static int is_number(char *arg)
+{
+    int sign;
+    int i;
+    int res;
+
+    sign = 1;
+    i = 0;
+    res = 0;
+    if
+}
+
+static int overflow_check(char *arg, int *value)
 {}
 
-int overflow_check(char *arg, int *value)
+static int duplicate_check(t_stack *data, int value, t_stack *size)
 {}
 
-int duplicate_check(t_stack *data, int value, t_stack *size)
-{}
+static int num_checker(char **splitted_args, t_stack *a)
+{
+    int i;
+    int value;
 
-
+    i = 0;
+        while(splitted_args[i] != NULL)
+    {
+        if(!is_number(splitted_args[i]))
+            return (-1);
+        if(!overflow_check(splitted_args[i], &value))
+            return (-1);
+        if(duplicate_check(a->data, value,a->size))
+            return (-1);
+        a->data[a->size] = value;
+        a->size++;
+        i++;
+    }
+}
 
 int count_total(int argc, char **argv)
 {
@@ -52,8 +92,6 @@ int count_words(char *arg)
 
 int parse_nums(char *arg, t_stack *a)
 {
-    int i;
-    int value;
     int ret;
     char **splitted_args;
 
@@ -66,28 +104,7 @@ int parse_nums(char *arg, t_stack *a)
         free_all(splitted_args);
         return (-1);
     }
-    i = 0;
-    while(splitted_args[i] != NULL)
-    {
-        if(!is_number(splitted_args[i]))
-        {
-            ret = -1;
-            break;
-        }
-        if(!overflow_check(splitted_args[i], &value))
-        {
-            ret = -1;
-            break;
-        }
-        if(duplicate_check(a->data, value,a->size))
-        {
-            ret = -1;
-            break;
-        }
-        a->data[a->size] = value;
-        a->size++;
-        i++;
-    }
+    ret = num_checker(splitted_args, a);
     free_all(splitted_args);
     return (ret);
 }
